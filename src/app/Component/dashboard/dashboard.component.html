@@ -1,0 +1,158 @@
+<div  >
+  <div class="row ">
+    <div class="col-md-3">
+      <input type="search" (ngModelChange)="searchOf(key.value)" #key="ngModel" ngModel name="key" style="width:100%;"
+        class="form-control mt-2 me-2 ms-2" placeholder="Search OF..." required>
+    </div>
+    <div class="col-md-3">
+      <input type="search" (ngModelChange)="searchClient(key1.value)" #key1="ngModel" ngModel name="key1"
+        style="width:100%;" class="form-control mt-2 me-2" placeholder="Search Client..." required>
+    </div>
+    <div class="col-md-3">
+      <input type="search" (ngModelChange)="searchLot(key2.value)" #key2="ngModel" ngModel name="key2"
+        style="width:100%;" class="form-control mt-2 " placeholder="Search Lot..." required>
+    </div>
+    <div class="col-md-3">
+      <button class="mt-2 "
+        style="color:white ;background-color:red; border-radius:5px;border:solid 2px white ; height:40px;width:60%; position: relative;top:0;right:0;"
+        (click)="logout()"> Log out </button>
+    </div>
+  </div>
+  <table class="table ">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">OF</th>
+        <th scope="col">client</th>
+        <th scope="col">lot</th>
+        <th scope="col">qteLot</th>
+        <th scope="col">qteFabriquer</th>
+        <th scope="col">Date</th>
+        <th scope="col">Reaction</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders ">
+        <th scope="row">{{order.id}}</th>
+        <td>{{order.of}}</td>
+        <td>{{order.client}}</td>
+        <td>{{order.lot}}</td>
+        <td>{{order.qteLot}}</td>
+        <td>{{order.qteFabriquer}}</td>
+        <td>{{order.createDate | date:"medium"}}</td>
+        <td>
+          <button  type="button" (click)="editOrder=order ; editOrderId=order.id"
+            class=" btn-success ms-2" data-bs-toggle="modal" data-bs-target="#updateBook" data-bs-whatever="@mdo"><i
+              class="fa-solid fa-pen-to-square me-2"></i></button>
+          <button  type="button" (click)="deleteOrderId=order.id"
+            class=" btn-danger ms-2" data-bs-toggle="modal" data-bs-target="#deleteBook" data-bs-whatever="@mdo"> <i
+              class="fa-solid fa-trash"></i></button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <button type="button" class=" btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal"
+    data-bs-whatever="@mdo" style="border-radius:5px;">Ajouter order</button>
+
+  <!-- Modal Add -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" style="width:400px;">
+        <div class="modal-header">
+          <h3>Nouvelle Ordre</h3>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="addOrder()">
+            <div class="mb-3">
+              <label for="recipient-name" class="col-form-label">OF:</label>
+              <input type="text" name="of" [(ngModel)]="order.of" class="form-control" id="recipient-name">
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Client:</label>
+              <input type="text" name="client" [(ngModel)]="order.client" class="form-control" id="recipient-name">
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">Lot:</label>
+              <input type="text" name="lot" [(ngModel)]="order.lot" class="form-control" id="recipient-name">
+            </div>
+            <div class="mb-3">
+              <label for="message-text" class="col-form-label">qteLot:</label>
+              <input type="text" name="qtLot" [(ngModel)]="order.qteLot" class="form-control" id="recipient-name">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class=" btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class=" btn-primary" data-bs-dismiss="modal">Envoyer Ordre</button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- modal Edit  -->
+
+  <div class="modal fade" id="updateBook" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header mb-1">
+          <h2 class="modal-title mt-3" id="exampleModalLabel">Modifier Ordre</h2>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #editForm="ngForm" >
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">OF:</label>
+              <input type="text" [(ngModel)]="editOrder.of" name="of" class="form-control" id="recipient-name">
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">Client:</label>
+              <input type="text" [(ngModel)]="editOrder.client" name="client" class="form-control" id="recipient-name">
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">lot:</label>
+              <input type="text" [(ngModel)]="editOrder.lot" name="lot" class="form-control" id="recipient-name">
+            </div>
+            <div class="form-group">
+              <label for="recipient-name" class="col-form-label">qtelot</label>
+              <input type="text" [(ngModel)]="editOrder.qteLot" name="qteLot" class="form-control" id="recipient-name">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class=" btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" (click)="editorder(editForm.value)"  class=" btn-primary" data-bs-dismiss="modal">Save
+            changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- modal Delete  -->
+  <div class="modal fade" id="deleteBook" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title mt-3" id="exampleModalLabel">Supprimer Ordre</h2>
+          <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Êtes-vous sûr de vouloir supprimer Ordre N°{{deleteOrderId}} ?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class=" btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button (click)="deleteOrder()" type="button" class=" btn-danger" data-bs-dismiss="modal">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
